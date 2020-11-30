@@ -1,0 +1,17 @@
+/Users/Stas/Projects/OwnList/OwnList/bin/Debug/netcoreapp3.1/OwnList.deps.json
+/Users/Stas/Projects/OwnList/OwnList/bin/Debug/netcoreapp3.1/OwnList.dll
+/Users/Stas/Projects/OwnList/OwnList/bin/Debug/netcoreapp3.1/OwnList.pdb
+/Users/Stas/Projects/OwnList/OwnList/obj/Debug/netcoreapp3.1/OwnList.csprojAssemblyReference.cache
+/Users/Stas/Projects/OwnList/OwnList/obj/Debug/netcoreapp3.1/OwnList.AssemblyInfoInputs.cache
+/Users/Stas/Projects/OwnList/OwnList/obj/Debug/netcoreapp3.1/OwnList.AssemblyInfo.cs
+/Users/Stas/Projects/OwnList/OwnList/obj/Debug/netcoreapp3.1/OwnList.csproj.CoreCompileInputs.cache
+/Users/Stas/Projects/OwnList/OwnList/obj/Debug/netcoreapp3.1/OwnList.dll
+/Users/Stas/Projects/OwnList/OwnList/obj/Debug/netcoreapp3.1/OwnList.pdb
+D:\code\OwnLists\OwnList\bin\Debug\netcoreapp3.1\OwnList.deps.json
+D:\code\OwnLists\OwnList\bin\Debug\netcoreapp3.1\OwnList.dll
+D:\code\OwnLists\OwnList\bin\Debug\netcoreapp3.1\OwnList.pdb
+D:\code\OwnLists\OwnList\obj\Debug\netcoreapp3.1\OwnList.csprojAssemblyReference.cache
+D:\code\OwnLists\OwnList\obj\Debug\netcoreapp3.1\OwnList.AssemblyInfoInputs.cache
+D:\code\OwnLists\OwnList\obj\Debug\netcoreapp3.1\OwnList.AssemblyInfo.cs
+D:\code\OwnLists\OwnList\obj\Debug\netcoreapp3.1\OwnList.dll
+D:\code\OwnLists\OwnList\obj\Debug\netcoreapp3.1\OwnList.pdb
