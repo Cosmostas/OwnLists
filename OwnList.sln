@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OwnList", "OwnList\OwnList.csproj", "{74E34CD3-09E6-49B3-85E9-487705D72415}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "List.Test", "List.Test\List.Test.csproj", "{2FBC1BBD-3736-498A-9D5E-584F617FE493}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74E34CD3-09E6-49B3-85E9-487705D72415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74E34CD3-09E6-49B3-85E9-487705D72415}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74E34CD3-09E6-49B3-85E9-487705D72415}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74E34CD3-09E6-49B3-85E9-487705D72415}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FBC1BBD-3736-498A-9D5E-584F617FE493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FBC1BBD-3736-498A-9D5E-584F617FE493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FBC1BBD-3736-498A-9D5E-584F617FE493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FBC1BBD-3736-498A-9D5E-584F617FE493}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

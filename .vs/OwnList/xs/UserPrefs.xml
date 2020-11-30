@@ -1,0 +1,31 @@
+﻿<Properties StartupConfiguration="{2FBC1BBD-3736-498A-9D5E-584F617FE493}|Default">
+  <MonoDevelop.Ide.ItemProperties.List.Test PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="OwnList/ArrayList.cs">
+    <Files>
+      <File FileName="List.Test/Node.cs" Line="1" Column="1" />
+      <File FileName="OwnList/Node.cs" />
+      <File FileName="List.Test/ArrayList.cs" />
+      <File FileName="OwnList/ArrayList.cs" Line="94" Column="17" />
+      <File FileName="OwnList/LinkedLIst.cs" />
+      <File FileName="List.Test/LinkedList.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="OwnList" expanded="True">
+            <Node name="List.Test" expanded="True" />
+            <Node name="OwnList" expanded="True">
+              <Node name="ArrayList.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
