@@ -6,21 +6,21 @@ namespace OwnList.DoubleLinkedList
 {
     public class DoubleLinkedList<T> where T : IComparable
     {
-        public DoubleLinkedNode<T> _head { get; private set; }
+        public DoubleLinkedNode<T> _root { get; private set; }
         public DoubleLinkedNode<T> _tail { get; private set; }
         public int _length { get; private set; }
 
 
         public DoubleLinkedList()
         {
-            _head = null;
+            _root = null;
             _tail = null;
             _length = 0;
         }
         public DoubleLinkedList(T value)
         {
-            _head = new DoubleLinkedNode<T>(value);
-            _tail = _head;
+            _root = new DoubleLinkedNode<T>(value);
+            _tail = _root;
             _length = 1;
         }
 
@@ -28,12 +28,12 @@ namespace OwnList.DoubleLinkedList
         {
             if (arr.Length == 0)
             {
-                _head = null;
+                _root = null;
             }
             else
             {
                 DoubleLinkedNode<T> crnt = new DoubleLinkedNode<T>(arr[0]);
-                _head = crnt;
+                _root = crnt;
                 for (int i = 1; i < arr.Length; ++i)
                 {
                     crnt._next = new DoubleLinkedNode<T>(arr[i]);
@@ -49,8 +49,8 @@ namespace OwnList.DoubleLinkedList
         {
             if (_length == 0)
             {
-                _head = new DoubleLinkedNode<T>(value);
-                _tail = _head;
+                _root = new DoubleLinkedNode<T>(value);
+                _tail = _root;
             }
             else
             {
@@ -68,9 +68,18 @@ namespace OwnList.DoubleLinkedList
 
             if (_length == 0)
             {
-                crnt = new DoubleLinkedNode<T>();
-                _head = crnt;
-                _tail = _head;
+                crnt = new DoubleLinkedNode<T>(arr[0]);
+                _root = crnt;
+                _tail = _root;
+
+                for (int i = 1; i < arr.Length; ++i)
+                {
+
+                    crnt._next = new DoubleLinkedNode<T>(arr[i]);
+                    crnt._next._prev = crnt;
+                    crnt = crnt._next;
+                }
+                _tail = crnt;
             }
 
             else
@@ -94,25 +103,25 @@ namespace OwnList.DoubleLinkedList
             {
                 throw new IndexOutOfRangeException();
             }
-            if(_head == null && index == 0)
+            if(_root == null && index == 0)
             {
-                _head = new DoubleLinkedNode<T>(value);
-                _tail = _head;
+                _root = new DoubleLinkedNode<T>(value);
+                _tail = _root;
 
             }
-            else if (_head != null && index == 0)
+            else if (_root != null && index == 0)
             {
-                DoubleLinkedNode<T> tmp = _head;
-                _head = new DoubleLinkedNode<T>(value);
-                _head._next = tmp;
-                tmp._prev = _head;
+                DoubleLinkedNode<T> tmp = _root;
+                _root = new DoubleLinkedNode<T>(value);
+                _root._next = tmp;
+                tmp._prev = _root;
                 _tail = tmp;
             }
             else
             {
-                if(index < _length / 2)
+                if(index <= _length / 2)
                 {
-                    DoubleLinkedNode<T> crnt = _head;
+                    DoubleLinkedNode<T> crnt = _root;
                     for (int i = 0; i < index - 1; ++i)
                     {
                         crnt = crnt._next;
@@ -125,7 +134,10 @@ namespace OwnList.DoubleLinkedList
                     crnt = crnt._next;
 
                     crnt._next = tmp;
-                    tmp._prev = crnt;
+                    if(tmp != null)
+                    {
+                        tmp._prev = crnt;
+                    }
                 }
                 else
                 {
@@ -134,15 +146,18 @@ namespace OwnList.DoubleLinkedList
                     {
                         crnt = crnt._prev;
                     }
-                    DoubleLinkedNode<T> tmp = crnt._prev;
+                    DoubleLinkedNode<T> tmp = crnt._next;
+                    crnt._next = new DoubleLinkedNode<T>(value);
 
-                    crnt._prev = new DoubleLinkedNode<T>(value);
+                    crnt._next._prev = crnt;
 
-                    crnt._prev._next = crnt;
+                    crnt = crnt._next;
 
-                    crnt = crnt._prev;
-                    crnt._prev = tmp;
-                    tmp._next = crnt;
+                    crnt._next = tmp;
+                    if (tmp != null)
+                    {
+                        tmp._prev = crnt;
+                    }
                 }
             }
 
@@ -155,9 +170,23 @@ namespace OwnList.DoubleLinkedList
                 throw new IndexOutOfRangeException();
             }
 
-            if(_head == null)
+            if(_root == null && index == 0)
             {
-                throw new NullReferenceException();
+
+                DoubleLinkedNode<T> tmp = new DoubleLinkedNode<T>(arr[0]);
+                DoubleLinkedNode<T> crnt = tmp;
+                for (int i = 1; i < arr.Length; ++i)
+                {
+                    crnt._next = new DoubleLinkedNode<T>(arr[i]);
+                    crnt._next._prev = crnt;
+                    crnt = crnt._next;
+                }
+                crnt._next = _root;
+                if(_root != null)
+                {
+                    _root._prev = crnt;
+                }
+                _root = tmp;
             }
             if (index == 0)
             {
@@ -170,14 +199,14 @@ namespace OwnList.DoubleLinkedList
                     crnt._next._prev = crnt;
                     crnt = crnt._next;
                 }
-                crnt._next = _head;
-                _head._prev = crnt;
-                _head = tmp;
+                crnt._next = _root;
+                _root._prev = crnt;
+                _root = tmp;
             }
             else
             {
 
-                DoubleLinkedNode<T> crnt = _head;
+                DoubleLinkedNode<T> crnt = _root;
                 for (int i = 0; i < index - 1; ++i)
                 {
                     crnt = crnt._next;
@@ -210,17 +239,17 @@ namespace OwnList.DoubleLinkedList
         public void PushFront(T value)
         {
             DoubleLinkedNode<T> crnt = new DoubleLinkedNode<T>(value);
-            crnt._next = _head;
-            if(_head != null)
+            crnt._next = _root;
+            if(_root != null)
             {
-                _head._prev = crnt;
-                _tail = _head;
+                _root._prev = crnt;
+                _tail = _root;
             }
             else
             {
                 _tail = crnt;
             }
-            _head = crnt;
+            _root = crnt;
             _length += 1;
         }
 
@@ -235,9 +264,12 @@ namespace OwnList.DoubleLinkedList
                 crnt._next._prev = crnt;
                 crnt = crnt._next;
             }
-            crnt._next = _head;
-            _head._prev = crnt;
-            _head = tmp;
+            if(_root != null)
+            {
+                crnt._next = _root;
+                _root._prev = crnt;
+            }
+            _root = tmp;
 
 
 
@@ -252,11 +284,11 @@ namespace OwnList.DoubleLinkedList
             }
             else if (_length == 1)
             {
-                _head = null;
+                _root = null;
             }
             else
             {
-                DoubleLinkedNode<T> crnt = _head;
+                DoubleLinkedNode<T> crnt = _root;
                 for (int i = 0; i < _length - 2; ++i)
                 {
                     crnt = crnt._next;
@@ -276,11 +308,11 @@ namespace OwnList.DoubleLinkedList
             }
             else if (_length == 1 || amount == _length)
             {
-                _head = null;
+                _root = null;
             }
             else
             {
-                DoubleLinkedNode<T> crnt = _head;
+                DoubleLinkedNode<T> crnt = _root;
                 for (int i = 0; i < _length - amount - 1; ++i)
                 {
                     crnt = crnt._next;
@@ -302,16 +334,16 @@ namespace OwnList.DoubleLinkedList
 
             if (_length == 1)
             {
-                _head = null;
+                _root = null;
             }
             else if (index == 0)
             {
-                _head = _head._next;
+                _root = _root._next;
 
             }
             else
             {
-                DoubleLinkedNode<T> crnt = _head;
+                DoubleLinkedNode<T> crnt = _root;
                 for (int i = 0; i < index - 1; ++i)
                 {
                     crnt = crnt._next;
@@ -332,20 +364,20 @@ namespace OwnList.DoubleLinkedList
             }
             else if (_length == 1)
             {
-                _head = null;
+                _root = null;
             }
             else if (index == 0)
             {
-                DoubleLinkedNode<T> crnt = _head;
+                DoubleLinkedNode<T> crnt = _root;
                 for (int i = 0; i < amount; ++i)
                 {
                     crnt = crnt._next;
                 }
-                _head = crnt;
+                _root = crnt;
             }
             else
             {
-                DoubleLinkedNode<T> crnt = _head;
+                DoubleLinkedNode<T> crnt = _root;
                 for (int i = 0; i < index - 1; ++i)
                 {
                     crnt = crnt._next;
@@ -373,12 +405,12 @@ namespace OwnList.DoubleLinkedList
             }
             else if (_length == 1)
             {
-                _head = null;
+                _root = null;
             }
             else
             {
-                _head = _head._next;
-                _head._prev = null;
+                _root = _root._next;
+                _root._prev = null;
             }
 
             --_length;
@@ -396,38 +428,38 @@ namespace OwnList.DoubleLinkedList
             }
             else if (_length == 1 || amount == _length)
             {
-                _head = null;
+                _root = null;
             }
             else
             {
-                DoubleLinkedNode<T> crnt = _head;
+                DoubleLinkedNode<T> crnt = _root;
                 for (int i = 0; i < amount; ++i)
                 {
                     crnt = crnt._next;
                 }
-                _head = crnt;
+                _root = crnt;
             }
 
             _length -= amount;
         }
-        public void PopByValue(int value)
+        public void PopByValue(T value)
         {
             if (_length == 0)
             {
                 throw new NullReferenceException();
             }
-            if ((_head._data).CompareTo(value) == 0)
+            if (_root == value)
             {
-                _head = _head._next;
+                _root = _root._next;
             }
             else
             {
-                DoubleLinkedNode<T> crnt = _head._next;
-                DoubleLinkedNode<T> prevNode = _head;
+                DoubleLinkedNode<T> crnt = _root._next;
+                DoubleLinkedNode<T> prevNode = _root;
 
                 for (int i = 0; i < _length - 2; ++i)
                 {
-                    if ((crnt._data).CompareTo(value) == 0)
+                    if (crnt==value)
                     {
                         prevNode._next = crnt._next;
                         break;
@@ -439,7 +471,7 @@ namespace OwnList.DoubleLinkedList
 
             _length -= 1;
         }
-        public void PopAllByValue(int value)
+        public void PopAllByValue(T value)
         {
             if (_length == 0)
             {
@@ -447,22 +479,22 @@ namespace OwnList.DoubleLinkedList
             }
 
             int numDeletedElems = 0;
-            while ((_head._data).CompareTo(value) == 0)
+            while (_root == value)
             {
-                _head = _head._next;
+                _root = _root._next;
                 ++numDeletedElems;
-                if (_head == null)
+                if (_root == null)
                 {
                     _length -= numDeletedElems;
                     return;
                 }
             }
-            DoubleLinkedNode<T> crnt = _head._next;
-            DoubleLinkedNode<T> prevNode = _head;
+            DoubleLinkedNode<T> crnt = _root._next;
+            DoubleLinkedNode<T> prevNode = _root;
 
             for (int i = 0; i < _length - 3; ++i)
             {
-                if ((crnt._data).CompareTo(value) == 0)
+                if (crnt == value)
                 {
                     prevNode._next = crnt._next;
                     ++numDeletedElems;
@@ -475,10 +507,10 @@ namespace OwnList.DoubleLinkedList
         }
         public int Find(T value)
         {
-            DoubleLinkedNode<T> crnt = _head;
+            DoubleLinkedNode<T> crnt = _root;
             for (int i = 0; i < _length; i++)
             {
-                if ((crnt._data).CompareTo(value) == 0)
+                if (crnt == value)
                 {
                     return i;
                 }
@@ -490,7 +522,7 @@ namespace OwnList.DoubleLinkedList
 
         public DoubleLinkedNode<T> GetNode(int index)
         {
-            if (_head == null)
+            if (_root == null)
             {
                 throw new NullReferenceException();
             }
@@ -502,7 +534,7 @@ namespace OwnList.DoubleLinkedList
             if (index < _length / 2)
             {
 
-                DoubleLinkedNode<T> crnt = _head;
+                DoubleLinkedNode<T> crnt = _root;
                 for (int i = 0; i < index; ++i)
                 {
                     crnt = crnt._next;
@@ -524,13 +556,13 @@ namespace OwnList.DoubleLinkedList
 
         public void Sort(DoubleLinkedNode<T> left, DoubleLinkedNode<T> right, int len)
         {
-            if (_head == null)
+            if (_root == null)
             {
                 throw new NullReferenceException();
             }
             else if (len == 2)
             {
-                if ((left._data).CompareTo(right._data) > 0)
+                if (left > right)
                 {
 
                     T tmp = left._data;
@@ -558,7 +590,7 @@ namespace OwnList.DoubleLinkedList
 
                 while (left != midle && crnt != right._next && crnt != _tail._next)
                 {
-                    if ((left._data).CompareTo(crnt._data) > 0)
+                    if (left>crnt._data)
                     {
                         arr[index] = crnt._data;
                         crnt = crnt._next;
@@ -613,8 +645,8 @@ namespace OwnList.DoubleLinkedList
             }
 
             tmp = _tail;
-            _tail = _head;
-            _head = _tail;
+            _tail = _root;
+            _root = tmp;
 
 
         }  
@@ -629,7 +661,7 @@ namespace OwnList.DoubleLinkedList
 
                 if(index < _length / 2)
                 {
-                    DoubleLinkedNode<T> crnt = _head;
+                    DoubleLinkedNode<T> crnt = _root;
 
                     for (int i = 0; i < index; ++i)
                     {
@@ -660,7 +692,7 @@ namespace OwnList.DoubleLinkedList
 
                 if (index < _length / 2)
                 {
-                    DoubleLinkedNode<T> crnt = _head;
+                    DoubleLinkedNode<T> crnt = _root;
 
                     for (int i = 0; i < index; ++i)
                     {
@@ -683,6 +715,90 @@ namespace OwnList.DoubleLinkedList
             }
         }
 
+        public DoubleLinkedNode<T> FindMax()
+        {
+            if (_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            DoubleLinkedNode<T> crnt = _root;
+            DoubleLinkedNode<T> Max = crnt;
+
+            for (int i = 0; i < _length - 1; ++i)
+            {
+                crnt = crnt._next;
+                if (crnt > Max)
+                {
+                    Max = crnt;
+                }
+            }
+
+            return Max;
+        }
+        public int FindMaxIndex()
+        {
+            if (_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            DoubleLinkedNode<T> crnt = _root;
+            DoubleLinkedNode<T> max = crnt;
+            int IndexOfMax = 0;
+            for (int i = 0; i < _length - 1; ++i)
+            {
+                crnt = crnt._next;
+                if (crnt > max)
+                {
+                    max = crnt;
+                    IndexOfMax = i + 1;
+                }
+
+            }
+
+            return IndexOfMax;
+        }
+        public int FindMinIndex()
+        {
+            if (_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            DoubleLinkedNode<T> crnt = _root;
+            DoubleLinkedNode<T> min = crnt;
+            int IndexOfMin = 0;
+            for (int i = 0; i < _length - 1; ++i)
+            {
+                crnt = crnt._next;
+                if (crnt < min)
+                {
+                    min = crnt;
+                    IndexOfMin = i + 1;
+                }
+
+            }
+
+            return IndexOfMin;
+        }
+        public DoubleLinkedNode<T> FindMin()
+        {
+            if (_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            DoubleLinkedNode<T> crnt = _root;
+            DoubleLinkedNode<T> min = crnt;
+
+            for (int i = 0; i < _length - 1; ++i)
+            {
+                crnt = crnt._next;
+                if (crnt < min)
+                {
+                    min = crnt;
+                }
+            }
+
+            return min;
+        }
         public override bool Equals(object obj)
         {
             DoubleLinkedList<T> doubleLinkedList = (DoubleLinkedList<T>)obj;
@@ -693,12 +809,12 @@ namespace OwnList.DoubleLinkedList
             }
             else
             {
-                DoubleLinkedNode<T> thisCrnt = _head;
-                DoubleLinkedNode<T> crnt = doubleLinkedList._head;
+                DoubleLinkedNode<T> thisCrnt = _root;
+                DoubleLinkedNode<T> crnt = doubleLinkedList._root;
 
                 for (int i = 0; i < _length; ++i)
                 {
-                    if ((thisCrnt._data).CompareTo(crnt._data) != 0)
+                    if (thisCrnt!=crnt)
                     {
                         return false;
                     }
@@ -726,7 +842,7 @@ namespace OwnList.DoubleLinkedList
             else
             {
                 string ans = "";
-                DoubleLinkedNode<T> crnt = _head;
+                DoubleLinkedNode<T> crnt = _root;
                 for (int i = 0; i < _length; ++i)
                 {
                     ans += $"{crnt._data} ";
