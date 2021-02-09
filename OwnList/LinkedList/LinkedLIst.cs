@@ -5,17 +5,17 @@ namespace OwnList
 
     public class LinkedList<T> where T : IComparable
     {
-        public Node<T> _headNode { get; private set; }
+        public Node<T> _root { get; private set; }
         public int _length { get; private set; }
 
         public LinkedList()
         {
-            _headNode = null;
+            _root = null;
             _length = 0;
         }
         public LinkedList(T value)
         {
-            _headNode = new Node<T>(value);
+            _root = new Node<T>(value);
             _length = 1;
         }
 
@@ -23,16 +23,16 @@ namespace OwnList
         {
             if(arr.Length == 0)
             {
-                _headNode = null;
+                _root = null;
             }
             else
             {
                 Node<T> curNode = new Node<T>(arr[0]);
-                _headNode = curNode;
+                _root = curNode;
                 for (int i = 1; i < arr.Length; ++i)
                 {
-                    curNode._nextNode = new Node<T>(arr[i]);
-                    curNode = curNode._nextNode;
+                    curNode._next = new Node<T>(arr[i]);
+                    curNode = curNode._next;
                 }
                 _length = arr.Length;
             }
@@ -42,19 +42,19 @@ namespace OwnList
         {
             if(_length == 0)
             {
-                _headNode = new Node<T>(value);
+                _root = new Node<T>(value);
             }
             else
             {
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 
-                while(curNode._nextNode != null)
+                while(curNode._next != null)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
                 Node<T> newNode = new Node<T>(value);
-                curNode._nextNode = newNode;
+                curNode._next = newNode;
             }
             _length += 1;
         } 
@@ -65,27 +65,30 @@ namespace OwnList
             if (_length == 0)
             {
                 curNode = new Node<T>();
-                _headNode = curNode;
+                _root = curNode;
             }
 
             else
             {
-                curNode = _headNode;
+                curNode = _root;
                 
-                while(curNode._nextNode != null)
+                while(curNode._next != null)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
-                curNode._nextNode = new Node<T>();
-                curNode = curNode._nextNode;
+                curNode._next = new Node<T>();
+                curNode = curNode._next;
             }
 
             for(int i = 0; i < arr.Length; ++i)
             {
                 curNode._data = arr[i];
-                curNode._nextNode = new Node<T>();
-                curNode = curNode._nextNode;
+                if(i != arr.Length - 1)
+                {
+                    curNode._next = new Node<T>();
+                    curNode = curNode._next;
+                }
             }
 
             _length += arr.Length;
@@ -100,20 +103,20 @@ namespace OwnList
 
             if(index == 0)
             {
-                Node<T> tmp = _headNode;
-                _headNode = new Node<T>(value);
-                _headNode._nextNode = tmp;
+                Node<T> tmp = _root;
+                _root = new Node<T>(value);
+                _root._next = tmp;
             }
             else
             {
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 for (int i = 0; i < index - 1; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
-                Node<T> tmp = curNode._nextNode;
-                curNode._nextNode = new Node<T>(value);
-                curNode._nextNode._nextNode = tmp;
+                Node<T> tmp = curNode._next;
+                curNode._next = new Node<T>(value);
+                curNode._next._next = tmp;
             }
 
             _length += 1;
@@ -132,30 +135,30 @@ namespace OwnList
                 Node<T> curNode = tmp;
                 for (int i = 1; i < arr.Length; ++i)
                 {
-                    curNode._nextNode = new Node<T>(arr[i]);
-                    curNode = curNode._nextNode;
+                    curNode._next = new Node<T>(arr[i]);
+                    curNode = curNode._next;
                 }
-                curNode._nextNode = _headNode;
-                _headNode = tmp;
+                curNode._next = _root;
+                _root = tmp;
             }
             else
             {
 
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 for (int i = 0; i < index - 1; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
-                Node<T> tmp = curNode._nextNode;
+                Node<T> tmp = curNode._next;
 
                 for(int i = 0; i < arr.Length; ++i)
                 {
-                    curNode._nextNode = new Node<T>(arr[i]);
-                    curNode = curNode._nextNode;
+                    curNode._next = new Node<T>(arr[i]);
+                    curNode = curNode._next;
                 }
 
-                curNode._nextNode = tmp;
+                curNode._next = tmp;
 
             }
 
@@ -165,8 +168,8 @@ namespace OwnList
         public void PushFront(T value)
         {
             Node<T> curNode = new Node<T>(value);
-            curNode._nextNode = _headNode;
-            _headNode = curNode;
+            curNode._next = _root;
+            _root = curNode;
             _length += 1;
         }
         
@@ -177,11 +180,11 @@ namespace OwnList
             Node<T> curNode = tmp;
             for(int i = 1; i < arr.Length; ++i)
             {
-                curNode._nextNode = new Node<T>(arr[i]);
-                curNode = curNode._nextNode;
+                curNode._next = new Node<T>(arr[i]);
+                curNode = curNode._next;
             }
-            curNode._nextNode = _headNode;
-            _headNode = tmp;
+            curNode._next = _root;
+            _root = tmp;
 
             _length += arr.Length;
         }
@@ -194,17 +197,17 @@ namespace OwnList
             }
             else if(_length == 1)
             {
-                _headNode = null;
+                _root = null;
             }
             else
             {
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 for (int i = 0; i < _length - 2; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
-                curNode._nextNode = null;
+                curNode._next = null;
             }
 
             --_length;
@@ -218,17 +221,17 @@ namespace OwnList
             }
             else if (_length == 1 || amount == _length)
             {
-                _headNode = null;
+                _root = null;
             }
             else
             {
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 for (int i = 0; i < _length - amount - 1; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
-                curNode._nextNode = null;
+                curNode._next = null;
             }
 
             _length -= amount ;
@@ -244,22 +247,22 @@ namespace OwnList
             
             if(_length == 1)
             {
-                _headNode = null;
+                _root = null;
             }
             else if (index == 0)
             {
-                _headNode = _headNode._nextNode;
+                _root = _root._next;
                 
             }
             else
             {
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 for (int i = 0; i < index - 1; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
-                curNode._nextNode = curNode._nextNode._nextNode;
+                curNode._next = curNode._next._next;
 
             }
 
@@ -274,33 +277,33 @@ namespace OwnList
             }
             else if (_length == 1)
             {
-                _headNode = null;
+                _root = null;
             }
             else if(index == 0)
             {
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 for (int i = 0; i < amount; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
-                _headNode = curNode;
+                _root = curNode;
             }
             else
             {
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 for (int i = 0; i < index - 1; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
                 Node<T> tmp = curNode;
 
                 for (int i = 0; i < amount; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
-                tmp._nextNode = curNode;
+                tmp._next = curNode;
             }
 
             _length -= amount;
@@ -315,11 +318,11 @@ namespace OwnList
             }
             else if (_length == 1)
             {
-                _headNode = null;
+                _root = null;
             }
             else
             {
-                _headNode = _headNode._nextNode;
+                _root = _root._next;
             }
 
             --_length;
@@ -336,50 +339,50 @@ namespace OwnList
             }
             else if (_length == 1 || amount == _length)
             {
-                _headNode = null;
+                _root = null;
             }
             else
             {
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 for(int i = 0; i < amount; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
-                _headNode = curNode;
+                _root = curNode;
             }
 
             _length -= amount ;
         }
-        public void PopByValue(int value)
+        public void PopByValue(T value)
         {
             if (_length == 0)
             {
                 throw new NullReferenceException();
             }
-            if((_headNode._data).CompareTo(value) == 0)
+            if(_root == value)
             {
-                _headNode = _headNode._nextNode;
+                _root = _root._next;
             }
             else
             {
-                Node<T> curNode = _headNode._nextNode;
-                Node<T> prevNode = _headNode;
+                Node<T> curNode = _root._next;
+                Node<T> prevNode = _root;
 
                 for (int i = 0; i < _length - 2; ++i)
                 {
-                    if ((curNode._data).CompareTo(value) == 0)
+                    if (curNode == value)
                     {
-                        prevNode._nextNode = curNode._nextNode;
+                        prevNode._next = curNode._next;
                         break;
                     }
                     prevNode = curNode;
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
             }
 
             _length -= 1 ;
         }
-        public void PopAllByValue(int value)
+        public void PopAllByValue(T value)
         {
             if (_length == 0)
             {
@@ -387,50 +390,135 @@ namespace OwnList
             }
 
             int numDeletedElems = 0;
-            while((_headNode._data).CompareTo(value) == 0)
+            while(_root == value)
             {
-                _headNode = _headNode._nextNode;
+                _root = _root._next;
                 ++numDeletedElems;
-                if(_headNode == null)
+                if(_root == null)
                 {
                     _length -= numDeletedElems;
                     return;
                 }
             }
-            Node<T> curNode = _headNode._nextNode;
-            Node<T> prevNode = _headNode;
+            Node<T> curNode = _root._next;
+            Node<T> prevNode = _root;
 
             for (int i = 0; i < _length - 3; ++i)
             {
-                if ((curNode._data).CompareTo(value) == 0)
+                if (curNode==value)
                 {
-                    prevNode._nextNode = curNode._nextNode;
+                    prevNode._next = curNode._next;
                     ++numDeletedElems;
                 }
                 prevNode = curNode;
-                curNode = curNode._nextNode;
+                curNode = curNode._next;
             }
 
             _length -= numDeletedElems;
         }
         public int Find(T value)
         {
-            Node<T> curNode = _headNode;
+            Node<T> curNode = _root;
             for(int i = 0; i < _length; i++)
             {
-                if((curNode._data).CompareTo(value) == 0)
+                if(curNode == value)
                 {
                     return i;
                 }
-                curNode = curNode._nextNode;
+                curNode = curNode._next;
             }
 
             throw new Exception("No such value");
         }
+        
+        public Node<T> FindMax()
+        {
+            if(_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            Node<T> crnt = _root;
+            Node<T> Max = crnt; 
+
+            for (int i = 0; i < _length - 1; ++i)
+            {
+                crnt = crnt._next;
+                if (crnt > Max)
+                {
+                    Max = crnt;
+                }
+            }
+
+            return Max;
+        } 
+        public int FindMaxIndex()
+        {
+            if(_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            Node<T> crnt = _root;
+            Node<T> max = crnt;
+            int IndexOfMax = 0;
+            for (int i = 0; i < _length - 1; ++i)
+            {
+                crnt = crnt._next;
+                if (crnt > max)
+                {
+                    max = crnt;
+                    IndexOfMax = i + 1;
+                }
+                
+            }
+
+            return IndexOfMax;
+        }
+        public int FindMinIndex()
+        {
+            if (_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            Node<T> crnt = _root;
+            Node<T> min = crnt;
+            int IndexOfMin = 0;
+            for (int i = 0; i < _length - 1; ++i)
+            {
+                crnt = crnt._next;
+                if (crnt < min)
+                {
+                    min = crnt;
+                    IndexOfMin = i + 1;
+                }
+
+            }
+
+            return IndexOfMin;
+        }
+        public Node<T> FindMin()
+        {
+            if(_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            Node<T> crnt = _root;
+            Node<T> min = crnt; 
+
+            for (int i = 0; i < _length - 1; ++i)
+            {
+                crnt = crnt._next;
+                if (crnt < min)
+                {
+                    min = crnt;
+                }
+            }
+
+            return min;
+        }
 
         public Node<T> GetNode(int index)
         {
-            if(_headNode == null)
+            if(_root == null)
             {
                 throw new NullReferenceException();
             }
@@ -440,10 +528,10 @@ namespace OwnList
             }
             else
             {
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 for(int i = 0; i < index; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
                 return curNode;
@@ -452,13 +540,13 @@ namespace OwnList
 
         public void Sort(Node<T> ptr1, Node<T> ptr2, int len)
         {
-            if(_headNode == null)
+            if(_root == null)
             {
                 throw new NullReferenceException();
             }
             else if(len == 2)
             {
-                if((ptr1._data).CompareTo(ptr2._data) > 0)
+                if(ptr1 > ptr2)
                 {
                     T tmp = ptr1._data;
                     ptr1._data = ptr2._data;
@@ -471,29 +559,29 @@ namespace OwnList
                 
                 for (int i = 0; i < len / 2 - 1 ; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
                 Sort(ptr1, curNode, len / 2);
-                Sort(curNode._nextNode, ptr2, len - len / 2 );
+                Sort(curNode._next, ptr2, len - len / 2 );
 
                 T[] arr = new T[len];
-                curNode = curNode._nextNode;
+                curNode = curNode._next;
                 Node<T> midle = curNode;
                 Node<T> first = ptr1;
                 int index = 0;
 
-                while (ptr1 != midle && curNode != ptr2._nextNode && curNode != null)
+                while (ptr1 != midle && curNode != ptr2._next && curNode != null)
                 {
-                    if ((ptr1._data).CompareTo(curNode._data) > 0)
+                    if (ptr1 > curNode)
                     {
                         arr[index] = curNode._data;
-                        curNode = curNode._nextNode;
+                        curNode = curNode._next;
                     }
                     else
                     {
                         arr[index] = ptr1._data;
-                        ptr1 = ptr1._nextNode;
+                        ptr1 = ptr1._next;
                     }
 
                     ++index;
@@ -507,17 +595,20 @@ namespace OwnList
                 while(index < len)
                 {
                     arr[index] = curNode._data;
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                     ++index;
                 }
                 curNode = first;
                 for (int i = 0; i < len; ++i)
                 {
                     curNode._data = arr[i];
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
             }
         }
+
+
+        
 
         public void Reverse()
         {
@@ -526,19 +617,22 @@ namespace OwnList
                 throw new NullReferenceException();
             }
 
-            Node<T> oldHeadNode = _headNode;
+            Node<T> oldHeadNode = _root;
             Node<T> temp;
 
-            while (oldHeadNode._nextNode != null)
+            while (oldHeadNode._next != null)
             {
-                temp = oldHeadNode._nextNode;
-                oldHeadNode._nextNode = temp._nextNode;
-                temp._nextNode = _headNode;
-                _headNode = temp;
+                temp = oldHeadNode._next;
+                oldHeadNode._next = temp._next;
+                temp._next = _root;
+                _root = temp;
             }
 
-
-
+        }
+        public void SortReverse()
+        {
+            Sort(_root, GetNode(_length - 1), _length);
+            Reverse();
         }
         public T this[int index]
         {
@@ -549,11 +643,11 @@ namespace OwnList
                     throw new IndexOutOfRangeException();
                 }
 
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 
                 for(int i = 0; i < index; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
                 return curNode._data;
@@ -566,11 +660,11 @@ namespace OwnList
                     throw new IndexOutOfRangeException();
                 }
 
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
 
                 for (int i = 0; i < index; ++i)
                 {
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
                 curNode._data = value;
@@ -587,17 +681,17 @@ namespace OwnList
             }
             else
             {
-                Node<T> thisCurNode = _headNode;
-                Node<T> curNode = linkedList._headNode;
+                Node<T> thisCurNode = _root;
+                Node<T> curNode = linkedList._root;
 
                 for(int i = 0; i < _length; ++i)
                 {
-                    if((thisCurNode._data).CompareTo(curNode._data) != 0)
+                    if(thisCurNode != curNode)
                     {
                         return false;
                     }
-                    thisCurNode = thisCurNode._nextNode;
-                    curNode = curNode._nextNode;
+                    thisCurNode = thisCurNode._next;
+                    curNode = curNode._next;
                 }
             }
 
@@ -620,11 +714,11 @@ namespace OwnList
             else
             {
                 string ans = "";
-                Node<T> curNode = _headNode;
+                Node<T> curNode = _root;
                 for(int i = 0; i < _length; ++i)
                 {
                     ans += $"{curNode._data} ";
-                    curNode = curNode._nextNode;
+                    curNode = curNode._next;
                 }
 
                 return ans;

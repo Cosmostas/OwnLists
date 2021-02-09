@@ -2,11 +2,12 @@
 
 namespace OwnList
 {
+    
     public class ArrayList<T> where T : IComparable
     {
-        public int _length { get; private set; }
+        private int _length { get; set; }
 
-        public T[] _arr;
+        private T[] _arr;
 
 
         
@@ -64,7 +65,7 @@ namespace OwnList
 
             _length += arr.Length;
         }
-        public void PushPos(T value, int num)
+        public void PushByIndex(T value, int num)
         {
             if (num > _length || num < 0)
             {
@@ -86,7 +87,7 @@ namespace OwnList
             _length += 1;
         }
         
-        public void PushPos(T[] arr, int num)
+        public void PushByIndex(T[] arr, int num)
         {
 
             if (num > _length || num < 0)
@@ -147,7 +148,7 @@ namespace OwnList
             _length += arr.Length;
         }
 
-        public T PopBack()
+        public void PopBack()
         {
             if(_length == 0)
             {
@@ -158,10 +159,24 @@ namespace OwnList
 
             --_length;
 
-            return result;
+        }
+        public void PopBackAmount(int amount)
+        {
+            if (_length == 0 || amount > _length || amount < -1)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            else if (_length == 1 || amount == _length)
+            {
+                _length = 0;
+            }
+            else
+            {
+                _length -= amount;
+            }
         }
 
-        public T PopPos(int num)
+        public void PopByPos(int num)
         {
             if( num >= _length || num < 0)
             {
@@ -170,18 +185,45 @@ namespace OwnList
 
             T result = _arr[num];
 
-            for (int i = _length - 1; i > num; --i)
+            for (int i = num; i < _length - 1; ++i)
             {
-                _arr[i - 1] = _arr[i];
+                _arr[i] = _arr[i + 1];
             }
 
             --_length;
 
-            return result;
+        }
+        
+
+        public void PopByPosAmount(int index, int amount)
+        {
+            if (_length == 0 || index + amount > _length || amount < -1 || index < -1)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            else if (_length == 1 || amount == _length)
+            {
+                _length = 0;
+            }
+            else if(index == 0)
+            {
+                PopFrontAmount(amount);
+            }
+            else
+            {
+                for (int i = index; i < index + amount; ++i)
+                {
+                    for (int j = i; j < _length - 1; ++j)
+                    {
+                        _arr[j] = _arr[j + 1];
+                    }
+                    --_length;
+                }
+            }
         }
 
 
-        public T PopFront()
+        public void PopFront()
         {
             if (_length == 0)
             {
@@ -190,14 +232,73 @@ namespace OwnList
 
             T result = _arr[0];
 
-            for (int i = _length - 1; i >= 0; ++i)
+            for (int i = 0; i < _length - 1; ++i)
             {
-                _arr[i - 1] = _arr[i];
+                _arr[i] = _arr[i + 1];
             }
 
             --_length;
+        }
 
-            return result;
+        public void PopFrontAmount(int amount)
+        {
+            if (_length == 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            else if (amount > _length || amount < 0)
+            {
+                throw new NullReferenceException();
+            }
+
+            while(amount != 0)
+            {
+                for(int i = 0; i < _length - 1; ++i)
+                {
+                    _arr[i] = _arr[i + 1];
+                }
+                --amount;
+                --_length;
+            }
+
+        }   
+
+        public void PopByValue(int value)
+        {
+
+            for(int i = 0; i < _length; ++i)
+            {
+                if(_arr[i].CompareTo(value) == 0)
+                {
+                    for (int j = i; j < _length - 1; ++j)
+                    {
+                        _arr[j] = _arr[j + 1];
+                    }
+                    --_length;
+                    return;
+                }
+            }
+        }
+        public void PopByValueAll(int value)
+        {
+
+            for(int i = 0; i < _length; ++i)
+            {
+                if(_arr[i].CompareTo(value) == 0)
+                {
+                    for (int j = i; j < _length - 1; ++j)
+                    {
+                        _arr[j] = _arr[j + 1];
+                    }
+                    --i;
+                    --_length;
+                }
+            }
+        }
+
+        public int GetLength()
+        {
+            return _length;
         }
         public int Find(T value)
         {
@@ -224,7 +325,145 @@ namespace OwnList
 
         }
 
+        public void Sort(int l, int r)
+        {
+            if (r - l == 2)
+            {
+                if(_arr[l].CompareTo(_arr[r - 1]) > 0)
+                {
+                    T tmp = _arr[r - 1];
+                    _arr[r - 1] = _arr[l];
+                    _arr[l] = tmp;
+                }
+            }
+            else if(r - l > 2)
+            {
+                int midle = (l + r) / 2;
+                Sort(l, midle);
+                Sort(midle, r);
 
+                T[] tmpArr = new T[r - l];
+
+                int amountLeft = midle - l;
+                int amountRight = r - midle;
+
+                int leftIndex = l;
+                int rightIndex = midle;
+
+                int index = 0;
+
+                while(amountLeft != 0 && amountRight !=0)
+                {
+                    if (_arr[leftIndex].CompareTo(_arr[rightIndex]) > 0)
+                    {
+                        tmpArr[index] = _arr[rightIndex];
+                        ++rightIndex;
+                        ++index;
+                        --amountRight;
+                    }
+                    else
+                    {
+                        tmpArr[index] = _arr[leftIndex];
+                        ++leftIndex;
+                        ++index;
+                        --amountLeft;
+                    }
+                }
+                
+                if(amountLeft == 0)
+                {
+                    leftIndex = rightIndex;
+                }
+
+                while(index < r - l)
+                {
+                    tmpArr[index] = _arr[leftIndex];
+                    ++leftIndex;
+                    ++index;
+                }
+
+                for(int i = 0; i < r - l; ++i)
+                {
+                    _arr[l + i] = tmpArr[i];
+                }
+                
+            }
+
+        }
+        public T FindMax()
+        {
+            if (_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            T max = _arr[0];
+
+            for (int i = 0; i < _length; ++i)
+            {
+                if(_arr[i].CompareTo(max) > 0)
+                {
+                    max = _arr[i];
+                }
+            }
+
+            return max;
+        }
+        public int FindMaxIndex()
+        {
+            if (_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            T max = _arr[0];
+            int indexOfMax = 0;
+            for (int i = 0; i < _length; ++i)
+            {
+                if (_arr[i].CompareTo(max) > 0)
+                {
+                    max = _arr[i];
+                    indexOfMax = i;
+                }
+            }
+
+            return indexOfMax;
+        }
+        public int FindMinIndex()
+        {
+            if (_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            T min = _arr[0];
+            int indexOfMin = 0;
+            for (int i = 0; i < _length; ++i)
+            {
+                if (_arr[i].CompareTo(min) < 0)
+                {
+                    min = _arr[i];
+                    indexOfMin = i;
+                }
+            }
+
+            return indexOfMin;
+        }
+        public T FindMin()
+        {
+            if (_length == 0)
+            {
+                throw new Exception("List is empty");
+            }
+            T min = _arr[0];
+
+            for (int i = 0; i < _length; ++i)
+            {
+                if (_arr[i].CompareTo(min) < 0)
+                {
+                    min = _arr[i];
+                }
+            }
+
+            return min;
+        }
         public T this[int index]
         {
             get
@@ -244,7 +483,6 @@ namespace OwnList
                 _arr[index] = value;
             }
         }
-
         private void IncreaseLength(int necessaryLength)
         {
             int Length = 1;
@@ -264,11 +502,14 @@ namespace OwnList
 
             for(int i = 0; i < _length; ++i)
             {
-                str += _arr[i] + "; ";
+                str += _arr[i] + " ";
             }
 
             return str;
         }
+
+
+
         public override bool Equals(object obj)
         {
             ArrayList<T> arrayList = (ArrayList<T>)obj;
